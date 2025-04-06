@@ -1,60 +1,142 @@
-function calculateStrikeRate() {
-  const name = document.getElementById('playerName').value;
-  const runs = parseInt(document.getElementById('runs').value);
-  const balls = parseInt(document.getElementById('balls').value);
-  const matchType = document.getElementById('matchType').value;
-  const output = document.getElementById('output');
-  const strikeImage = document.getElementById('strikeImage');
-
-  if (!name || isNaN(runs) || isNaN(balls) || !matchType) {
-    output.innerHTML = "Please fill in all fields.";
-    strikeImage.innerHTML = '';
-    return;
-  }
-
-  const strikeRate = ((runs / balls) * 100).toFixed(2);
-  let comment = "";
-  let imageHTML = "";
-
-  if (matchType === "T20") {
-    if (strikeRate > 150) {
-      comment = "Massive hitting! 🔥 Perfect T20 innings.";
-      imageHTML = "<img src='https://media.giphy.com/media/3o7TKzBqVrXy38U5s4/giphy.gif' width='150'/>";
-    } else if (strikeRate >= 100) {
-      comment = "Decent T20 performance.";
-      imageHTML = "<img src='https://media.giphy.com/media/l3vR7z6kxkzG8f7J6/giphy.gif' width='150'/>";
-    } else {
-      comment = "Too slow for a T20! 👎";
-      imageHTML = "<img src='https://media.giphy.com/media/l2JdYkk8zT78CEjEA/giphy.gif' width='150'/>";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cricket Strike Rate Analyzer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f8fb;
+      padding: 20px;
+      text-align: center;
     }
-  } else if (matchType === "ODI") {
-    if (strikeRate > 120) {
-      comment = "Aggressive and effective ODI play!";
-      imageHTML = "<img src='https://media.giphy.com/media/3o6Zt8MGvD1RYYUwac/giphy.gif' width='150'/>";
-    } else if (strikeRate >= 75) {
-      comment = "Balanced innings for an ODI.";
-      imageHTML = "<img src='https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif' width='150'/>";
-    } else {
-      comment = "Bit slow for an ODI.";
-      imageHTML = "<img src='https://media.giphy.com/media/l0Ex2f8LmB1x5gnIQ/giphy.gif' width='150'/>";
+    input, select, button {
+      padding: 10px;
+      margin: 8px;
+      font-size: 16px;
     }
-  } else if (matchType === "Test") {
-    if (strikeRate > 80) {
-      comment = "Fast scorer for a Test match!";
-      imageHTML = "<img src='https://media.giphy.com/media/xT1R9ZlgnfNTDg29s0/giphy.gif' width='150'/>";
-    } else if (strikeRate >= 40) {
-      comment = "Solid defense, classic Test cricket.";
-      imageHTML = "<img src='https://media.giphy.com/media/xT1XGzEINB9jR2WnDq/giphy.gif' width='150'/>";
-    } else {
-      comment = "Digging in deep, nice defending!";
-      imageHTML = "<img src='https://media.giphy.com/media/3o6ZsYk7IhYY6sq2fu/giphy.gif' width='150'/>";
+    #output {
+      margin-top: 20px;
+      font-size: 18px;
     }
-  }
+    #strikeImage img {
+      margin-top: 15px;
+    }
+    canvas {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
 
-  output.innerHTML = `<strong>${name}</strong> scored <strong>${runs}</strong> runs off <strong>${balls}</strong> balls.<br>
-  <strong>Strike Rate:</strong> ${strikeRate}<br><em>${comment}</em>`;
+  <h1>Cricket Strike Rate Analyzer</h1>
+  
+  <input type="text" id="playerName" placeholder="Player Name" required>
+  <input type="number" id="runs" placeholder="Runs Scored" required>
+  <input type="number" id="balls" placeholder="Balls Faced" required>
+  
+  <select id="matchType" required>
+    <option value="">Select Match Type</option>
+    <option value="T20">T20</option>
+    <option value="ODI">ODI</option>
+    <option value="Test">Test</option>
+  </select>
 
-  strikeImage.innerHTML = imageHTML;
+  <button onclick="calculateStrikeRate()">Analyze</button>
 
-  renderChart(runs, balls);
-}
+  <div id="output"></div>
+  <div id="strikeImage"></div>
+  <canvas id="chartCanvas" width="400" height="200"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    function calculateStrikeRate() {
+      const name = document.getElementById('playerName').value;
+      const runs = parseInt(document.getElementById('runs').value);
+      const balls = parseInt(document.getElementById('balls').value);
+      const matchType = document.getElementById('matchType').value;
+      const output = document.getElementById('output');
+      const strikeImage = document.getElementById('strikeImage');
+
+      if (!name || isNaN(runs) || isNaN(balls) || !matchType || balls === 0) {
+        output.innerHTML = "⚠️ Please fill in all fields correctly.";
+        strikeImage.innerHTML = '';
+        return;
+      }
+
+      const strikeRate = ((runs / balls) * 100).toFixed(2);
+      let comment = "";
+      let imageHTML = "";
+
+      if (matchType === "T20") {
+        if (strikeRate > 150) {
+          comment = "Massive hitting! 🔥 Perfect T20 innings.";
+          imageHTML = '<img src="https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif" width="180">';
+        } else if (strikeRate >= 100) {
+          comment = "Decent T20 performance.";
+          imageHTML = '<img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" width="180">';
+        } else {
+          comment = "Too slow for a T20! 👎";
+          imageHTML = '<img src="https://media.giphy.com/media/l2JHRhAtnJSDNJ2py/giphy.gif" width="180">';
+        }
+      } else if (matchType === "ODI") {
+        if (strikeRate > 120) {
+          comment = "Aggressive and effective ODI play!";
+          imageHTML = '<img src="https://media.giphy.com/media/3o7btWZHzx6fM7oBJS/giphy.gif" width="180">';
+        } else if (strikeRate >= 75) {
+          comment = "Balanced innings for an ODI.";
+          imageHTML = '<img src="https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif" width="180">';
+        } else {
+          comment = "Bit slow for an ODI.";
+          imageHTML = '<img src="https://media.giphy.com/media/3oKIPtjElfqwMOTbH2/giphy.gif" width="180">';
+        }
+      } else if (matchType === "Test") {
+        if (strikeRate > 80) {
+          comment = "Fast scorer for a Test match!";
+          imageHTML = '<img src="https://media.giphy.com/media/l0HlRincY2Yv4qyt6/giphy.gif" width="180">';
+        } else if (strikeRate >= 40) {
+          comment = "Solid defense, classic Test cricket.";
+          imageHTML = '<img src="https://media.giphy.com/media/xT4uQulxzV39haRFjG/giphy.gif" width="180">';
+        } else {
+          comment = "Digging in deep, nice defending!";
+          imageHTML = '<img src="https://media.giphy.com/media/3o6ZsVZlf9xkQj2ZCk/giphy.gif" width="180">';
+        }
+      }
+
+      output.innerHTML = `${name} scored ${runs} runs off ${balls} balls.<br>
+                          <strong>Strike Rate:</strong> ${strikeRate}<br>${comment}`;
+      strikeImage.innerHTML = imageHTML;
+
+      renderChart(runs, balls);
+    }
+
+    function renderChart(runs, balls) {
+      const ctx = document.getElementById('chartCanvas').getContext('2d');
+      if (window.strikeChart) {
+        window.strikeChart.destroy(); // prevent duplicate charts
+      }
+
+      window.strikeChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Runs', 'Balls'],
+          datasets: [{
+            label: 'Player Stats',
+            data: [runs, balls],
+            backgroundColor: ['#3498db', '#2ecc71']
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
