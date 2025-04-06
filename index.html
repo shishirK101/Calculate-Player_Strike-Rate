@@ -1,322 +1,354 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ICC Cricket Stats Portal</title>
-  <!-- Font Awesome (optional for icons) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-dYc1/1A3pJ1+NjNafc1/0xHbUnN1R51pWJ8e4m1Gm+Y6UCBubWXJTHW3aZh8LYh+9p3PjKZqjU+nIVIcq+8L0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style>
-    /* Global Styles */
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #0a0a0a, #2c3e50);
-      color: #fff;
-      overflow-x: hidden;
-    }
-    header {
-      background: #003b49;
-      text-align: center;
-      padding: 30px 20px;
-      position: relative;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2.8rem;
-      color: #00bcd4;
-    }
-    header img.logo {
-      width: 120px;
-      position: absolute;
-      top: 10px;
-      left: 20px;
-    }
-    /* Hide default audio controls */
-    audio { display: none; }
-    /* Main Container */
-    .container {
-      max-width: 600px;
-      margin: 60px auto 120px auto;
-      padding: 20px;
-      background: rgba(0, 59, 73, 0.85);
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-      text-align: center;
-    }
-    .input-section {
-      margin-bottom: 20px;
-    }
-    .input-section input, .input-section select {
-      padding: 12px;
-      font-size: 1rem;
-      width: 80%;
-      margin: 8px 0;
-      border: none;
-      border-radius: 4px;
-    }
-    .input-section button {
-      padding: 12px 20px;
-      font-size: 1rem;
-      background-color: #00bcd4;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .input-section button:hover {
-      background-color: #0097a7;
-    }
-    /* Stats Card */
-    .stats-card {
-      display: none;
-      background: #002d3a;
-      padding: 20px;
-      border-radius: 8px;
-      margin-top: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
-      animation: fadeIn 0.8s ease-in-out;
-    }
-    .stats-card img.player-image {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid #00bcd4;
-    }
-    .stats-card h2 {
-      margin: 15px 0 10px;
-      font-size: 1.8rem;
-      color: #00bcd4;
-    }
-    .flag-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 10px 0;
-    }
-    .flag-container img.flag {
-      width: 80px;
-      height: 50px;
-      border-radius: 4px;
-      animation: wave 2s infinite;
-      transform-origin: 50% 0%;
-      margin-right: 10px;
-    }
-    .player-stats span {
-      display: block;
-      margin: 10px 0;
-      font-size: 1.1rem;
-    }
-    /* Additional performance input section */
-    .performance-inputs {
-      margin-top: 20px;
-      display: none;
-    }
-    .performance-inputs input {
-      width: 60%;
-      margin: 6px auto;
-      display: block;
-    }
-    /* Footer */
-    footer {
-      text-align: center;
-      background: #000;
-      padding: 15px;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      font-size: 0.9rem;
-      color: #ccc;
-    }
-    /* Animations */
-    @keyframes wave {
-      0% { transform: rotate(0deg); }
-      25% { transform: rotate(3deg); }
-      50% { transform: rotate(0deg); }
-      75% { transform: rotate(-3deg); }
-      100% { transform: rotate(0deg); }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICC Cricket Stats Portal</title>
+    <style>
+        /* --- Basic Reset and Box-sizing --- */
+        *, ::before, ::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- Body Styling --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6; /* Light, clean background */
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0; /* Ensure no default body margins */
+        }
+
+        /* --- Header Styling --- */
+        header {
+            background-color: #0d47a1; /* ICC primary blue */
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center the logo */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        header img {
+            height: 50px; /* Adjust logo size as needed */
+        }
+
+        /* --- Main Content Styling --- */
+        main {
+            flex-grow: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        /* --- Input Area Styling --- */
+        .input-area {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .input-group input[type="text"],
+        .input-group select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #1976d2; /* A slightly lighter blue for action buttons */
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #1565c0;
+        }
+
+        /* --- Stats Card Styling --- */
+        #stats-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 80%;
+            max-width: 700px;
+            display: none; /* Hidden by default */
+            align-items: center;
+            gap: 20px;
+            text-align: center;
+        }
+
+        #player-info {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        #player-image-container {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #eee;
+        }
+
+        #player-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .flag-icon {
+            width: 30px;
+            height: 20px;
+            margin-left: 10px;
+            vertical-align: middle;
+            border: 1px solid #ccc;
+        }
+
+        .stats-group {
+            margin-top: 15px;
+            font-size: 16px;
+        }
+
+        .stats-group strong {
+            font-weight: bold;
+            color: #0d47a1;
+        }
+
+        /* --- Animation: Waving Flag --- */
+        .flag-container {
+            display: inline-block;
+        }
+
+        .flag-wave {
+            display: inline-block;
+            animation: wave 2s infinite alternate;
+            transform-origin: center bottom;
+        }
+
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(5deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            main {
+                padding: 20px;
+            }
+            .input-area, #stats-card {
+                width: 95%;
+            }
+            #stats-card {
+                flex-direction: column;
+                align-items: center;
+            }
+            #player-info {
+                text-align: center;
+            }
+            #player-image-container {
+                margin-bottom: 15px;
+            }
+        }
+
+        /* --- Footer Styling --- */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 0.9em;
+        }
+    </style>
 </head>
 <body>
+    <header>
+        <img src="https://www.icc-cricket.com/resources/ver/i/default/images/logo.svg" alt="ICC Logo">
+    </header>
 
-  <!-- Header with ICC Logo -->
-  <header>
-    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/d/d4/International_Cricket_Council_%28logo%29.svg/512px-International_Cricket_Council_%28logo%29.svg.png" alt="ICC Logo" class="logo">
-    <h1>ICC Cricket Stats Portal</h1>
-  </header>
+    <main>
+        <div class="input-area">
+            <h2>Identify Player</h2>
+            <div class="input-group">
+                <label for="playerName">Player Name:</label>
+                <input type="text" id="playerName" placeholder="Enter player name">
+            </div>
+            <div class="input-group">
+                <label for="playerRole">Role:</label>
+                <select id="playerRole">
+                    <option value="">Select Role</option>
+                    <option value="Batter">Batter</option>
+                    <option value="Bowler">Bowler</option>
+                </select>
+            </div>
+            <button onclick="identifyPlayer()">Identify Player</button>
+        </div>
 
-  <!-- Background Music (sample track; replace with permitted track as needed) -->
-  <audio id="icc-music" loop autoplay>
-    <source src="https://www.bensound.com/bensound-music/bensound-creativeminds.mp3" type="audio/mp3">
-    Your browser does not support the audio element.
-  </audio>
+        <div class="input-area" id="performance-input" style="display: none;">
+            <h2>Enter Performance Data</h2>
+            <div id="batter-inputs" style="display: none;">
+                <div class="input-group">
+                    <label for="runsScored">Runs Scored:</label>
+                    <input type="number" id="runsScored" placeholder="Enter runs">
+                </div>
+                <div class="input-group">
+                    <label for="ballsFaced">Balls Faced:</label>
+                    <input type="number" id="ballsFaced" placeholder="Enter balls faced">
+                </div>
+            </div>
+            <div id="bowler-inputs" style="display: none;">
+                <div class="input-group">
+                    <label for="runsGiven">Runs Given:</label>
+                    <input type="number" id="runsGiven" placeholder="Enter runs given">
+                </div>
+                <div class="input-group">
+                    <label for="ballsBowled">Balls Bowled:</label>
+                    <input type="number" id="ballsBowled" placeholder="Enter balls bowled">
+                </div>
+                <div class="input-group">
+                    <label for="wicketsTaken">Wickets Taken:</label>
+                    <input type="number" id="wicketsTaken" placeholder="Enter wickets taken">
+                </div>
+            </div>
+            <button onclick="calculateStats()">Calculate Stats</button>
+        </div>
 
-  <!-- Main Container -->
-  <div class="container">
-    <!-- Player Identification Input -->
-    <div class="input-section">
-      <input type="text" id="playerName" placeholder="Enter Player Name (e.g., Virat Kohli)" />
-      <select id="role">
-        <option value="">Select Role</option>
-        <option value="batter">Batter</option>
-        <option value="bowler">Bowler</option>
-      </select>
-      <button onclick="identifyPlayer()">Identify Player</button>
-    </div>
+        <div id="stats-card">
+            <div id="player-image-container">
+                <img id="player-image" src="" alt="Player Image">
+            </div>
+            <div id="player-info">
+                <h3 id="player-name-display"></h3>
+                <p><span id="player-country"></span> <span class="flag-container"><span id="player-flag" class="flag-wave"></span></span></p>
+                <div id="performance-stats">
+                    </div>
+            </div>
+        </div>
+    </main>
 
-    <!-- Performance Input Section (shown after identification) -->
-    <div class="performance-inputs" id="performanceInputs">
-      <div id="batterInputs" style="display: none;">
-        <input type="number" id="runsScored" placeholder="Enter Runs Scored" />
-        <input type="number" id="ballsFaced" placeholder="Enter Balls Faced" />
-      </div>
-      <div id="bowlerInputs" style="display: none;">
-        <input type="number" id="runsGiven" placeholder="Enter Runs Given" />
-        <input type="number" id="ballsBowled" placeholder="Enter Balls Bowled" />
-        <input type="number" id="wicketsTaken" placeholder="Enter Wickets Taken" />
-      </div>
-      <button onclick="calculatePerformance()">Calculate Performance</button>
-    </div>
+    <footer>
+        &copy; 2025 ICC Cricket Stats Portal - All Rights Reserved
+    </footer>
 
-    <!-- Stats Card to Display Player Info and Calculated Stats -->
-    <div class="stats-card" id="statsCard">
-      <img id="playerImage" class="player-image" src="" alt="Player Image">
-      <h2 id="playerNameDisplay"></h2>
-      <div class="flag-container">
-        <img id="playerFlag" class="flag" src="" alt="Country Flag">
-        <span id="playerCountry"></span>
-      </div>
-      <div class="player-stats" id="playerStats">
-        <!-- Calculated performance stats will appear here -->
-      </div>
-    </div>
-  </div>
+    <audio id="backgroundMusic" autoplay loop>
+        <source src="your-royalty-free-music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
-  <!-- Footer -->
-  <footer>
-    ICC Cricket Stats Portal | Powered by HTML, CSS, and JavaScript
-  </footer>
+    <script>
+        // --- Pre-defined Player Data ---
+        const playersData = [
+            { name: "Virat Kohli", role: "Batter", country: "India", flag: "🇮🇳", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Virat_Kohli.jpg/330px-Virat_Kohli.jpg" },
+            { name: "Rohit Sharma", role: "Batter", country: "India", flag: "🇮🇳", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Rohit_Sharma45.jpg/330px-Rohit_Sharma45.jpg" },
+            { name: "Jasprit Bumrah", role: "Bowler", country: "India", flag: "🇮🇳", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Jasprit_Bumrah_Bowling_Action_2022.jpg/330px-Jasprit_Bumrah_Bowling_Action_2022.jpg" },
+            { name: "Babar Azam", role: "Batter", country: "Pakistan", flag: "🇵🇰", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Babar_Azam_during_the_warm-up_match_against_New_Zealand_before_the_ICC_Men%27s_T20_World_Cup_2022.jpg/330px-Babar_Azam_during_the_warm-up_match_against_New_Zealand_before_the_ICC_Men%27s_T20_World_Cup_2022.jpg" },
+            { name: "Shaheen Afridi", role: "Bowler", country: "Pakistan", flag: "🇵🇰", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Shaheen_Shah_Afridi.jpg/330px-Shaheen_Shah_Afridi.jpg" },
+            { name: "Kane Williamson", role: "Batter", country: "New Zealand", flag: "🇳🇿", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Kane_Williamson_in_2022.jpg/330px-Kane_Williamson_in_2022.jpg" },
+            { name: "Trent Boult", role: "Bowler", country: "New Zealand", flag: "🇳🇿", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Trent_Boult_in_2015.jpg/330px-Trent_Boult_in_2015.jpg" },
+            { name: "Steve Smith", role: "Batter", country: "Australia", flag: "🇦🇺", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Steve_Smith_fielding.jpg/330px-Steve_Smith_fielding.jpg" },
+            { name: "Pat Cummins", role: "Bowler", country: "Australia", flag: "🇦🇺", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Pat_Cummins_2023.jpg/330px-Pat_Cummins_2023.jpg" },
+            { name: "Joe Root", role: "Batter", country: "England", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Joe_Root_in_2019.jpg/330px-Joe_Root_in_2019.jpg" },
+            { name: "James Anderson", role: "Bowler", country: "England", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/James_Anderson_bowling_2017.jpg/330px-James_Anderson_bowling_2017.jpg" },
+            // Add more players here...
+        ];
 
-  <!-- JavaScript Code -->
-  <script>
-    // Pre-defined players with country, flag, and image (keys in lowercase for case-insensitive matching)
-    const players = {
-      "virat kohli": {
-        country: "India",
-        flag: "https://flagcdn.com/w320/in.png",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Virat_Kohli_2017.jpg/800px-Virat_Kohli_2017.jpg"
-      },
-      "rohit sharma": {
-        country: "India",
-        flag: "https://flagcdn.com/w320/in.png",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Rohit_Sharma_%28Indian_cricketer%29.jpg/800px-Rohit_Sharma_%28Indian_cricketer%29.jpg"
-      },
-      "ms dhoni": {
-        country: "India",
-        flag: "https://flagcdn.com/w320/in.png",
-        image: "https://upload.wikimedia.org/wikipedia/commons/0/0f/MS_Dhoni_2019.jpg"
-      },
-      "shaheen afridi": {
-        country: "Pakistan",
-        flag: "https://flagcdn.com/w320/pk.png",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Shaheen_Shah_Afridi_2021.jpg/800px-Shaheen_Shah_Afridi_2021.jpg"
-      },
-      "david warner": {
-        country: "Australia",
-        flag: "https://flagcdn.com/w320/au.png",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/David_Warner_2019.jpg/800px-David_Warner_2019.jpg"
-      },
-      "ben stokes": {
-        country: "England",
-        flag: "https://flagcdn.com/w320/gb-eng.png",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Ben_Stokes_%28England_cricketer%29.jpg/800px-Ben_Stokes_%28England_cricketer%29.jpg"
-      },
-      "chris gayle": {
-        country: "West Indies",
-        flag: "https://flagcdn.com/w320/jm.png",
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Chris_Gayle_2016.jpg/800px-Chris_Gayle_2016.jpg"
-      }
-      // Add more players as needed...
-    };
+        const playerNameInput = document.getElementById('playerName');
+        const playerRoleSelect = document.getElementById('playerRole');
+        const performanceInputDiv = document.getElementById('performance-input');
+        const batterInputsDiv = document.getElementById('batter-inputs');
+        const bowlerInputsDiv = document.getElementById('bowler-inputs');
+        const statsCardDiv = document.getElementById('stats-card');
+        const playerNameDisplay = document.getElementById('player-name-display');
+        const playerCountryDisplay = document.getElementById('player-country');
+        const playerFlagDisplay = document.getElementById('player-flag');
+        const playerImageDisplay = document.getElementById('player-image');
+        const performanceStatsDisplay = document.getElementById('performance-stats');
 
-    let currentPlayer = null;
-    let currentRole = null;
+        // --- Function to Identify Player ---
+        function identifyPlayer() {
+            const playerName = playerNameInput.value.trim();
+            const selectedRole = playerRoleSelect.value;
 
-    // Step 1: Identify player based on name and role selection
-    function identifyPlayer() {
-      let inputName = document.getElementById("playerName").value.trim().toLowerCase();
-      currentRole = document.getElementById("role").value;
-      if (!inputName || !currentRole) {
-        alert("Please enter a player name and select a role (Batter or Bowler).");
-        return;
-      }
-      if (players.hasOwnProperty(inputName)) {
-        currentPlayer = players[inputName];
-        // Populate the stats card with player info
-        document.getElementById("statsCard").style.display = "block";
-        document.getElementById("playerNameDisplay").innerText = capitalize(inputName);
-        document.getElementById("playerFlag").src = currentPlayer.flag;
-        document.getElementById("playerCountry").innerText = currentPlayer.country;
-        document.getElementById("playerImage").src = currentPlayer.image;
-        // Show the appropriate performance inputs based on role
-        document.getElementById("performanceInputs").style.display = "block";
-        if (currentRole === "batter") {
-          document.getElementById("batterInputs").style.display = "block";
-          document.getElementById("bowlerInputs").style.display = "none";
-        } else if (currentRole === "bowler") {
-          document.getElementById("batterInputs").style.display = "none";
-          document.getElementById("bowlerInputs").style.display = "block";
+            if (!playerName || !selectedRole) {
+                alert("Please enter a player name and select a role.");
+                return;
+            }
+
+            const foundPlayer = playersData.find(player =>
+                player.name.toLowerCase() === playerName.toLowerCase() && player.role === selectedRole
+            );
+
+            if (foundPlayer) {
+                playerNameDisplay.textContent = foundPlayer.name;
+                playerCountryDisplay.textContent = foundPlayer.country;
+                playerFlagDisplay.textContent = foundPlayer.flag;
+                playerImageDisplay.src = foundPlayer.image;
+                playerImageDisplay.alt = foundPlayer.name;
+
+                // Show/hide performance input based on role
+                performanceInputDiv.style.display = 'block';
+                batterInputsDiv.style.display = selectedRole === 'Batter' ? 'block' : 'none';
+                bowlerInputsDiv.style.display = selectedRole === 'Bowler' ? 'block' : 'none';
+
+                // Show the stats card (initially empty)
+                statsCardDiv.style.display = 'flex';
+                performanceStatsDisplay.innerHTML = ''; // Clear previous stats
+            } else {
+                alert("Player not found with the selected role.");
+                statsCardDiv.style.display = 'none';
+                performanceInputDiv.style.display = 'none';
+            }
         }
-      } else {
-        alert("Player not found! Please try another name.");
-      }
-    }
 
-    // Step 2: Calculate performance based on user input
-    function calculatePerformance() {
-      if (!currentPlayer || !currentRole) {
-        alert("Please identify the player first.");
-        return;
-      }
-      let statsText = "";
-      if (currentRole === "batter") {
-        let runs = parseFloat(document.getElementById("runsScored").value);
-        let balls = parseFloat(document.getElementById("ballsFaced").value);
-        if (isNaN(runs) || isNaN(balls) || balls === 0) {
-          alert("Please enter valid numbers for runs and balls (balls must be greater than zero).");
-          return;
-        }
-        let strikeRate = ((runs / balls) * 100).toFixed(2);
-        statsText = `Runs Scored: ${runs} | Balls Faced: ${balls} | Strike Rate: ${strikeRate}`;
-      } else if (currentRole === "bowler") {
-        let runsGiven = parseFloat(document.getElementById("runsGiven").value);
-        let ballsBowled = parseFloat(document.getElementById("ballsBowled").value);
-        let wickets = parseFloat(document.getElementById("wicketsTaken").value);
-        if (isNaN(runsGiven) || isNaN(ballsBowled) || isNaN(wickets) || ballsBowled === 0 || wickets === 0) {
-          alert("Please enter valid numbers for runs given, balls bowled (greater than zero), and wickets taken (greater than zero).");
-          return;
-        }
-        let overs = (ballsBowled / 6).toFixed(2);
-        let economy = (runsGiven / overs).toFixed(2);
-        let bowlingSR = (ballsBowled / wickets).toFixed(2);
-        let bowlingAvg = (runsGiven / wickets).toFixed(2);
-        statsText = `Overs Bowled: ${overs} | Runs Given: ${runsGiven} | Wickets: ${wickets} <br>Economy Rate: ${economy} | Bowling Strike Rate: ${bowlingSR} | Bowling Average: ${bowlingAvg}`;
-      }
-      // Display the calculated stats
-      document.getElementById("playerStats").innerHTML = statsText;
-    }
+        // --- Function to Calculate and Display Stats ---
+        function calculateStats() {
+            const selectedRole = playerRoleSelect.value;
+            let statsHTML = '';
 
-    // Helper function to capitalize words
-    function capitalize(str) {
-      return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-    }
-  </script>
+            if (selectedRole === 'Batter') {
+                const runs = parseInt(document.getElementById('runsScored').value);
+                const balls = parseInt(document.getElementById('ballsFaced').value);
 
-</body>
-</html>
+                if (!isNaN(runs) && !isNaN(balls) && balls > 0) {
+                    const strikeRate = ((runs / balls) * 100).toFixed(2);
+                    statsHTML = `<div class="stats-group"><strong>Strike Rate:</strong> ${strikeRate}</div>`;
+                } else {
+                    alert("Please enter valid runs scored and balls faced.");
+                    return;
+                }
+            } else if (selectedRole === 'Bowler') {
+                const runsGiven = parseInt(document.getElementById('runsGiven').value);
+                const ballsBowled = parseInt(document.getElementById('ballsBowled').value);
+                const wicketsTaken = parseInt(document.getElementById('wicketsTaken
