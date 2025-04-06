@@ -1,124 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Cricket Strike Rate Analyzer</title>
-<style>
-body {
-font-family: Arial, sans-serif;
-background-color: #f3f8ff;
-padding: 20px;
-}
-h1 {
-text-align: center;
-color: #333;
-}
-.container {
-max-width: 500px;
-margin: auto;
-background: white;
-padding: 20px;
-border-radius: 10px;
-box-shadow: 0 0 12px rgba(0,0,0,0.1);
-}
-label {
-display: block;
-margin-top: 10px;
-font-weight: bold;
-}
-input, select {
-width: 100%;
-padding: 8px;
-margin-top: 5px;
-border-radius: 5px;
-border: 1px solid #ccc;
-}
-button {
-margin-top: 15px;
-width: 100%;
-padding: 10px;
-background-color: #28a745;
-border: none;
-color: white;
-font-size: 16px;
-cursor: pointer;
-border-radius: 5px;
-}
-button:hover {
-background-color: #218838;
-}
-#result {
-margin-top: 20px;
-padding: 15px;
-background-color: #eef;
-border-left: 5px solid #007BFF;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cricket Strike Rate Analyzer</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 1rem;
+    }
+
+    .form-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 0.7rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #27ae60;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #219150;
+    }
+
+    #output {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+
+    canvas {
+      margin-top: 2rem;
+      max-width: 400px;
+    }
+  </style>
 </head>
 <body>
 
-<h1>🏏 Cricket Strike Rate Analyzer</h1>
-<div class="container">
-<label>Player Name:</label>
-<input type="text" id="playerName">
+  <h1>Cricket Strike Rate Analyzer 🏏</h1>
+  <div class="form-container">
+    <input type="text" id="playerName" placeholder="Enter player name" />
+    <input type="number" id="runs" placeholder="Enter total runs scored" />
+    <input type="number" id="balls" placeholder="Enter balls faced" />
+    
+    <select id="matchType">
+      <option value="">Select Match Format</option>
+      <option value="T20">T20</option>
+      <option value="ODI">ODI</option>
+      <option value="Test">Test</option>
+    </select>
 
-<label>Match Format:</label>
-<select id="format">
-<option value="T20">T20</option>
-<option value="ODI">ODI</option>
-<option value="Test">Test</option>
-</select>
+    <button onclick="calculateStrikeRate()">Analyze</button>
 
-<label>Runs Scored:</label>
-<input type="number" id="runs" min="0">
+    <div id="output"></div>
+    <canvas id="chart"></canvas>
+  </div>
 
-<label>Balls Faced:</label>
-<input type="number" id="balls" min="1">
+  <script>
+    function calculateStrikeRate() {
+      const name = document.getElementById('playerName').value;
+      const runs = parseInt(document.getElementById('runs').value);
+      const balls = parseInt(document.getElementById('balls').value);
+      const matchType = document.getElementById('matchType').value;
+      const output = document.getElementById('output');
 
-<button onclick="analyze()">Calculate Strike Rate</button>
+      if (!name || isNaN(runs) || isNaN(balls) || !matchType) {
+        output.innerHTML = "Please fill in all fields.";
+        return;
+      }
 
-<div id="result"></div>
-</div>
+      const strikeRate = ((runs / balls) * 100).toFixed(2);
 
-<script>
-function analyze() {
-const name = document.getElementById("playerName").value;
-const format = document.getElementById("format").value;
-const runs = parseInt(document.getElementById("runs").value);
-const balls = parseInt(document.getElementById("balls").value);
-const resultDiv = document.getElementById("result");
+      let comment = "";
 
-if (!name || isNaN(runs) || isNaN(balls) || balls === 0) {
-resultDiv.innerHTML = "<b>Please fill all fields correctly.</b>";
-return;
-}
+      if (matchType === "T20") {
+        if (strikeRate > 150) comment = "Massive hitting! 🔥 Perfect T20 innings.";
+        else if (strikeRate >= 100) comment = "Decent T20 performance.";
+        else comment = "Too slow for a T20! 👎";
+      } else if (matchType === "ODI") {
+        if (strikeRate > 120) comment = "Aggressive and effective ODI play!";
+        else if (strikeRate >= 75) comment = "Balanced innings for an ODI.";
+        else comment = "Bit slow for an ODI.";
+      } else if (matchType === "Test") {
+        if (strikeRate > 80) comment = "Fast scorer for a Test match!";
+        else if (strikeRate >= 40) comment = "Solid defense, classic Test cricket.";
+        else comment = "Digging in deep, nice defending!";
+      }
 
-const strikeRate = ((runs / balls) * 100).toFixed(2);
-let analysis = "";
+      output.innerHTML = `<strong>${name}</strong> scored <strong>${runs}</strong> runs off <strong>${balls}</strong> balls. <br>
+      <strong>Strike Rate:</strong> ${strikeRate}<br><em>${comment}</em>`;
 
-if (format === "T20") {
-if (strikeRate >= 150) analysis = `🔥 Massive hitting by ${name}! Total carnage!`;
-else if (strikeRate >= 120) analysis = `👏 Decent T20 knock with smart strike rotation.`;
-else analysis = `😐 Slow innings for T20. Needs more aggressive play.`;
-} else if (format === "ODI") {
-if (strikeRate >= 100) analysis = `💥 Good attacking intent in ODIs!`;
-else if (strikeRate >= 75) analysis = `👍 Balanced innings, paced well.`;
-else analysis = `🛡️ Defensive knock, may need to push more next time.`;
-} else if (format === "Test") {
-if (strikeRate >= 70) analysis = `💣 Aggressive for Test cricket! Confident batting.`;
-else if (strikeRate >= 40) analysis = `🧠 Sensible and balanced Test knock.`;
-else analysis = `🛡️ Classic Test defense. Good patience and technique.`;
-}
+      renderChart(runs, balls);
+    }
 
-resultDiv.innerHTML = `
-<h3>Player: ${name}</h3>
-<p><strong>Format:</strong> ${format}</p>
-<p><strong>Runs:</strong> ${runs}</p>
-<p><strong>Balls Faced:</strong> ${balls}</p>
-<p><strong>Strike Rate:</strong> ${strikeRate}</p>
-<p><strong>Analysis:</strong> ${analysis}</p>
-`;
-}
-</script>
+    function renderChart(runs, balls) {
+      const ctx = document.getElementById('chart').getContext('2d');
+      if (window.strikeChart) window.strikeChart.destroy(); // clear old chart
+
+      window.strikeChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Runs', 'Balls Remaining'],
+          datasets: [{
+            label: 'Strike Rate Chart',
+            data: [runs, balls - runs],
+            backgroundColor: ['#27ae60', '#e74c3c'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }
+      });
+    }
+  </script>
 </body>
 </html>
