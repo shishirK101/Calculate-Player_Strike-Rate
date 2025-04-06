@@ -1,187 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ICC Cricket Player Stats</title>
-
-    <!-- External Libraries -->
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
-    
-    <!-- Styles -->
-    <style>
-        body {
-            background-color: #121212;
-            color: white;
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-
-        header {
-            text-align: center;
-            padding: 40px;
-            background: #003b49;
-        }
-
-        header h1 {
-            font-size: 50px;
-            font-weight: 700;
-            margin: 0;
-            color: #00bcd4;
-        }
-
-        .flag {
-            width: 60px;
-            height: 40px;
-            border-radius: 4px;
-        }
-
-        .player-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-top: 50px;
-        }
-
-        .input-section {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .input-section input {
-            padding: 12px;
-            font-size: 16px;
-            width: 250px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .input-section button {
-            padding: 12px;
-            margin-left: 10px;
-            background-color: #00bcd4;
-            color: white;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        .stats-card {
-            background: #003b49;
-            padding: 20px;
-            border-radius: 8px;
-            width: 400px;
-            text-align: center;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .stats-card img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-        }
-
-        .player-stats {
-            margin-top: 20px;
-        }
-
-        .player-stats span {
-            display: block;
-            margin: 10px;
-            font-size: 18px;
-        }
-
-        footer {
-            background-color: #222;
-            color: #bbb;
-            text-align: center;
-            padding: 15px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-        .flag-container {
-            display: flex;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .flag-container img {
-            margin-right: 10px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ICC Cricket Stats Analyzer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+    .logo {
+      width: 150px;
+      margin-bottom: 20px;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 600px;
+      margin: auto;
+    }
+    input, select, button {
+      margin: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+    button {
+      background-color: #00bfff;
+      color: white;
+      cursor: pointer;
+    }
+    #output {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    .flag {
+      margin-top: 20px;
+      animation: wave 2s infinite;
+    }
+    @keyframes wave {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(2deg); }
+      50% { transform: rotate(0deg); }
+      75% { transform: rotate(-2deg); }
+      100% { transform: rotate(0deg); }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-    <h1>ICC Cricket Stats & Player Recognition</h1>
-</header>
+  <!-- ICC Logo -->
+  <img class="logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/d/d4/International_Cricket_Council_%28logo%29.svg/1200px-International_Cricket_Council_%28logo%29.svg.png" alt="ICC Logo" />
 
-<!-- Music Player (you can add ICC's official theme music file here) -->
-<audio id="icc-music" loop autoplay>
-    <source src="icc_theme_music.mp3" type="audio/mp3">
-    Your browser does not support the audio element.
-</audio>
+  <div class="container">
+    <h1>Cricket Stats Analyzer</h1>
 
-<!-- Player Stats Section -->
-<div class="player-container">
-    <div class="input-section">
-        <input type="text" id="playerName" placeholder="Enter Player Name" />
-        <button onclick="searchPlayer()">Search</button>
-    </div>
+    <select id="role">
+      <option value="">Select Role</option>
+      <option value="batter">Batter</option>
+      <option value="bowler">Bowler</option>
+    </select><br/>
 
-    <!-- Player Stats Display -->
-    <div class="stats-card" id="statsCard" style="display: none;">
-        <img id="playerImage" src="" alt="Player Image" />
-        <h2 id="playerNameDisplay"></h2>
-        <div class="flag-container">
-            <img id="playerFlag" class="flag" src="" alt="Country Flag" />
-            <span id="playerCountry"></span>
-        </div>
+    <input type="text" id="playerName" placeholder="Player Name" /><br/>
+    <input type="number" id="runs" placeholder="Runs Scored (Batter)" />
+    <input type="number" id="balls" placeholder="Balls Faced (Batter)" /><br/>
+    
+    <input type="number" id="wickets" placeholder="Wickets Taken (Bowler)" />
+    <input type="number" id="runsGiven" placeholder="Runs Given (Bowler)" /><br/>
 
-        <div class="player-stats">
-            <span id="battingStats">Batting: -</span>
-            <span id="bowlingStats">Bowling: -</span>
-        </div>
-    </div>
-</div>
+    <select id="matchType">
+      <option value="">Select Match Type</option>
+      <option value="T20">T20</option>
+      <option value="ODI">ODI</option>
+      <option value="Test">Test</option>
+    </select><br/>
 
-<!-- Footer -->
-<footer>
-    <p>ICC Cricket Stats & Player Recognition | Powered by JavaScript</p>
-</footer>
+    <button onclick="calculateStats()">Analyze</button>
 
-<!-- JavaScript Code -->
-<script>
+    <div id="output"></div>
+    <div id="flagContainer"></div>
+  </div>
+
+  <script>
+    // Player list with countries (you can expand this list)
     const players = {
-        "Virat Kohli": { country: "India", flag: "https://www.countryflags.io/in/flat/64.png", batting: "Average: 52.04", bowling: "Economy: -", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Virat_Kohli_2017.jpg/800px-Virat_Kohli_2017.jpg" },
-        "Rohit Sharma": { country: "India", flag: "https://www.countryflags.io/in/flat/64.png", batting: "Average: 48.96", bowling: "Economy: -", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Rohit_Sharma_%28Indian_cricketer%29.jpg/800px-Rohit_Sharma_%28Indian_cricketer%29.jpg" },
-        "MS Dhoni": { country: "India", flag: "https://www.countryflags.io/in/flat/64.png", batting: "Average: 40.99", bowling: "Economy: -", image: "https://upload.wikimedia.org/wikipedia/commons/0/0f/MS_Dhoni_2019.jpg" },
-        "Shaheen Afridi": { country: "Pakistan", flag: "https://www.countryflags.io/pk/flat/64.png", batting: "-", bowling: "Economy: 4.57", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Shaheen_Shah_Afridi_2021.jpg/800px-Shaheen_Shah_Afridi_2021.jpg" },
-        "David Warner": { country: "Australia", flag: "https://www.countryflags.io/au/flat/64.png", batting: "Average: 44.88", bowling: "Economy: -", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/David_Warner_2019.jpg/800px-David_Warner_2019.jpg" },
-        "Ben Stokes": { country: "England", flag: "https://www.countryflags.io/gb/flat/64.png", batting: "Average: 39.34", bowling: "Economy: 4.87", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Ben_Stokes_%28England_cricketer%29.jpg/800px-Ben_Stokes_%28England_cricketer%29.jpg" },
-        "Chris Gayle": { country: "West Indies", flag: "https://www.countryflags.io/jm/flat/64.png", batting: "Average: 40.47", bowling: "Economy: -", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Chris_Gayle_2016.jpg/800px-Chris_Gayle_2016.jpg" }
+      "Virat Kohli": "India",
+      "David Warner": "Australia",
+      "Rashid Khan": "Afghanistan",
+      "Babar Azam": "Pakistan",
+      "Joe Root": "England",
+      "Sandeep Lamichhane": "Nepal",
+      "AB de Villiers": "South Africa",
+      "Steve Smith": "Australia"
     };
 
-    function searchPlayer() {
-        const playerName = document.getElementById("playerName").value.trim();
+    // Flag URLs for the countries
+    const flags = {
+      "India": "https://flagcdn.com/w320/in.png",
+      "Australia": "https://flagcdn.com/w320/au.png",
+      "Afghanistan": "https://flagcdn.com/w320/af.png",
+      "Pakistan": "https://flagcdn.com/w320/pk.png",
+      "England": "https://flagcdn.com/w320/gb-eng.png",
+      "Nepal": "https://flagcdn.com/w320/np.png",
+      "South Africa": "https://flagcdn.com/w320/za.png"
+    };
 
-        if (players[playerName]) {
-            const player = players[playerName];
+    function calculateStats() {
+      const role = document.getElementById('role').value;
+      const name = document.getElementById('playerName').value;
+      const matchType = document.getElementById('matchType').value;
 
-            document.getElementById("statsCard").style.display = "block";
-            document.getElementById("playerNameDisplay").innerText = playerName;
-            document.getElementById("playerFlag").src = player.flag;
-            document.getElementById("playerCountry").innerText = player.country;
-            document.getElementById("battingStats").innerText = player.batting;
-            document.getElementById("bowlingStats").innerText = player.bowling;
-            document.getElementById("playerImage").src = player.image;
-        } else {
+      // Get batter stats
+      const runs = parseInt(document.getElementById('runs').value);
+      const balls = parseInt(document.getElementById('balls').value);
+
+      // Get bowler stats
+      const wickets = parseInt(document.getElementById('wickets').value);
+      const runsGiven = parseInt(document.getElementById('runsGiven').value);
+
+      const output = document.getElementById('output');
+      const flagContainer = document.getElementById('flagContainer');
+
+      if (!name || !matchType) {
+        output.innerHTML = "⚠️ Please fill in all fields.";
+        flagContainer.innerHTML = '';
+        return;
+      }
+
+      // Automatically get the player's country
+      const country = players[name];
+
+      if (!country) {
+        output.innerHTML = "⚠️ Player not found!";
+        flagContainer.innerHTML = '';
+        return;
+      }
+
+      // If batter role
+      if (role === "batter") {
+        if (isNaN(runs) || isNaN(balls)) {
+          output.innerHTML = "⚠️ Please enter valid runs and balls.";
+          return;
+        }
+
+        const strikeRate = ((runs / balls) * 100).toFixed(2);
+        let comment = "";
+
+        if (matchType === "T20") {
+          if (strikeRate > 150) {
+            comment = "💥 Massive hitting! Perfect T20 innings.";
+          } else if (strikeRate >= 100) {
+            comment = "👍 Decent T20 performance.";
+          } else {
+            comment = "🐢 Too slow for a T20.";
+          }
+        } else if (matchType === "ODI") {
+          if (strikeRate > 120) {
+            comment = "🔥 Aggressive and effective ODI play!";
+          } else if (strikeRate >= 75) {
+            comment = "⚖️ Balanced innings for an ODI.";
+          } else {
+            comment = "🧱 Bit slow for an ODI.";
+          }
+        } else if (matchType === "Test") {
+          if (strikeRate > 80) {
+            comment = "⚡ Fast scorer in Test match!";
+          } else if (strikeRate >= 40) {
+            comment = "🛡️ Solid defense, classic Test cricket.";
+          } else {
+            comment = "🧘 Digging deep, nice defending!";
+          }
+        }
+
+        output.innerHTML = `<strong>${name}</strong> scored <strong>${runs}</strong> runs off <strong>${balls}</strong> balls.
+        <br>Strike Rate: <strong>${strikeRate}</strong>
+        <br>${comment}`;
+
+      } else if (role === "bowler") {
+        if (isNaN(wickets) || isNaN(runsGiven)) {
+          output.innerHTML = "⚠️ Please enter valid wickets and runs given.";
+          return;
+        }
+
+        const oversBowled = (balls / 6).toFixed(2);
+        const economyRate = (runsGiven / oversBowled).toFixed(2);
+        const bowlingStrikeRate = (balls / wickets).toFixed(2);
+        const bowlingAverage = (runsGiven / wickets).toFixed(2);
+
+        output.innerHTML = `<strong>${name}</strong> bowled <strong>${oversBowled}</strong> overs, giving <strong>${runsGiven}</strong> runs.
+        <br>Economy Rate: <strong>${economyRate}</strong>
+        <br>Bowling Strike Rate: <strong>${bowlingStrikeRate}</strong>
+        <br>Bowling Average: <strong>${bowlingAverage}</strong>`;
+      }
+
+      // Display country flag
+      if (flags[country]) {
+        flagContainer.innerHTML = `<img class="flag" src="${flags[country]}" alt="${country} flag" width="100">`;
+      }
+    }
+  </script>
+</body>
+</html>
